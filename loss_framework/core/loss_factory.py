@@ -5,9 +5,13 @@ Provides flexible object creation with configuration support
 """
 
 import torch
-from typing import Optional, Dict, Any, Union
+from typing import Optional, Dict, Any, Union, TYPE_CHECKING
+
 from .loss_registry import LossRegistry
 from ..config.loss_config import LossConfig
+
+if TYPE_CHECKING:
+    from .composite_loss import CompositeLoss
 
 
 class LossFactory:
