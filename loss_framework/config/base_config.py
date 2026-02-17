@@ -63,7 +63,39 @@ class BaseConfig(ABC):
     @classmethod
     def from_dict(cls, config_dict: Dict[str, Any]) -> "BaseConfig":
         """Create configuration from dictionary."""
-        return cls(**config_dict)
+        import dataclasses
+
+        # Get field types from dataclass
+        field_types = {}
+        if dataclasses.is_dataclass(cls):
+            for field in dataclasses.fields(cls):
+                field_types[field.name] = field.type
+
+        # Process nested dataclasses
+        processed_dict = {}
+        for key, value in config_dict.items():
+            if key in field_types:
+                field_type = field_types[key]
+                # Handle Optional[T] type
+                if (
+                    hasattr(field_type, "__origin__")
+                    and field_type.__origin__ is not None
+                ):
+                    if field_type.__origin__ is not type(None):
+                        # It's Optional[T], get the inner type
+                        args = getattr(field_type, "__args__", None)
+                        if args and len(args) > 0:
+                            field_type = args[0]
+
+                # If value is a dict and field_type is a dataclass, convert it
+                if isinstance(value, dict) and dataclasses.is_dataclass(field_type):
+                    processed_dict[key] = field_type.from_dict(value)
+                else:
+                    processed_dict[key] = value
+            else:
+                processed_dict[key] = value
+
+        return cls(**processed_dict)
 
     @classmethod
     def from_json(cls, filepath: str) -> "BaseConfig":

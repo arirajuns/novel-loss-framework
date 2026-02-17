@@ -124,24 +124,22 @@ class TestExperimentWorkflow:
 
     def test_experiment_directory_creation(self, tmp_path):
         """Test experiment directory creation."""
+        from loss_framework.config.experiment_config import LoggingConfig
+
         exp_config = ExperimentConfig(
             experiment_name="test_exp",
-            logging_config=type(
-                "obj",
-                (object,),
-                {
-                    "log_dir": str(tmp_path),
-                    "log_level": "INFO",
-                    "use_tensorboard": False,
-                    "tensorboard_dir": str(tmp_path / "tensorboard"),
-                    "use_wandb": False,
-                    "wandb_project": "test",
-                    "wandb_entity": None,
-                    "log_frequency": 10,
-                    "save_frequency": 1,
-                    "keep_last_n": 3,
-                },
-            )(),
+            logging_config=LoggingConfig(
+                log_dir=str(tmp_path),
+                log_level="INFO",
+                use_tensorboard=False,
+                tensorboard_dir=str(tmp_path / "tensorboard"),
+                use_wandb=False,
+                wandb_project="test",
+                wandb_entity=None,
+                log_frequency=10,
+                save_frequency=1,
+                keep_last_n=3,
+            ),
         )
 
         exp_dir = exp_config.get_experiment_dir()
@@ -261,7 +259,8 @@ class TestErrorHandling:
 
         predictions = torch.randn(32, 10)
 
-        with pytest.raises(TypeError):
+        # Shape mismatch should raise ValueError, not TypeError
+        with pytest.raises(ValueError):
             InputValidator.validate_shape(predictions, expected_shape=(32, 5))
 
     def test_nan_gradient_detection(self):

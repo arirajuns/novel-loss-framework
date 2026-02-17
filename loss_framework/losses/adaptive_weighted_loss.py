@@ -28,10 +28,13 @@ class WeightScheduleStrategy:
         decay_epochs: int,
         min_weight: float,
         max_weight: float,
+        initial_weight: float,
     ) -> float:
         """Linear weight schedule."""
         if epoch < warmup_epochs:
-            return min_weight + (max_weight - min_weight) * (epoch / warmup_epochs)
+            return initial_weight + (max_weight - initial_weight) * (
+                epoch / warmup_epochs
+            )
         elif epoch < warmup_epochs + decay_epochs:
             progress = (epoch - warmup_epochs) / decay_epochs
             return max_weight - (max_weight - min_weight) * progress
@@ -45,12 +48,17 @@ class WeightScheduleStrategy:
         decay_epochs: int,
         min_weight: float,
         max_weight: float,
+        initial_weight: float,
     ) -> float:
         """Exponential weight schedule."""
         if epoch < warmup_epochs:
-            return min_weight + (max_weight - min_weight) * math.exp(
-                epoch / warmup_epochs - 1
-            )
+            # At epoch 0: multiplier should be 0, so result = initial_weight
+            # At epoch = warmup_epochs: multiplier should be 1, so result = max_weight
+            if warmup_epochs > 0:
+                multiplier = 1 - math.exp(-5 * epoch / warmup_epochs)
+            else:
+                multiplier = 1.0
+            return initial_weight + (max_weight - initial_weight) * multiplier
         elif epoch < warmup_epochs + decay_epochs:
             progress = (epoch - warmup_epochs) / decay_epochs
             return min_weight + (max_weight - min_weight) * math.exp(-5 * progress)
@@ -64,10 +72,11 @@ class WeightScheduleStrategy:
         decay_epochs: int,
         min_weight: float,
         max_weight: float,
+        initial_weight: float,
     ) -> float:
         """Cosine annealing weight schedule."""
         if epoch < warmup_epochs:
-            return min_weight + (max_weight - min_weight) * (
+            return initial_weight + (max_weight - initial_weight) * (
                 0.5 * (1 - math.cos(math.pi * epoch / warmup_epochs))
             )
         elif epoch < warmup_epochs + decay_epochs:
@@ -208,6 +217,7 @@ class AdaptiveWeightedLoss(BaseLoss):
             self.decay_epochs,
             self.min_weight,
             self.max_weight,
+            self.initial_weight,
         )
 
     def _preprocess_inputs(self, predictions: torch.Tensor, targets: torch.Tensor):

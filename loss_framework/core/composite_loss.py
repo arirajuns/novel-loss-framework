@@ -142,9 +142,11 @@ class CompositeLoss(BaseLoss):
 
             # Track individual loss
             with torch.no_grad():
-                self._current_losses[name] = (
-                    loss_value.item() if torch.is_tensor(loss_value) else loss_value
-                )
+                if torch.is_tensor(loss_value):
+                    # Reduce tensor to scalar before calling .item()
+                    self._current_losses[name] = loss_value.mean().item()
+                else:
+                    self._current_losses[name] = loss_value
                 self._loss_history[name].append(self._current_losses[name])
 
         return total_loss
