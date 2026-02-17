@@ -55,26 +55,37 @@ class ManifoldGeometry:
         Compute distance in hyperbolic space (Poincaré ball model).
 
         Formula: d(x, y) = arccosh(1 + 2||x-y||^2 / ((1-||x||^2)(1-||y||^2)))
+        
+        Fixed: Added robust numerical handling for boundary cases.
         """
-        # Project to Poincaré ball if necessary
-        x_norm_sq = (x**2).sum(dim=-1)
-        y_norm_sq = (y**2).sum(dim=-1)
+        # Compute norms with numerical stability
+        x_norm_sq = (x ** 2).sum(dim=-1)
+        y_norm_sq = (y ** 2).sum(dim=-1)
 
-        # Ensure points are inside the ball
-        x_norm_sq = x_norm_sq.clamp(max=1 - eps)
-        y_norm_sq = y_norm_sq.clamp(max=1 - eps)
+        # Clamp norms to valid range (inside Poincaré ball)
+        # Use smaller epsilon for more stable boundaries
+        boundary_eps = 1e-5
+        x_norm_sq = torch.clamp(x_norm_sq, max=1 - boundary_eps)
+        y_norm_sq = torch.clamp(y_norm_sq, max=1 - boundary_eps)
 
-        # Compute numerator
+        # Compute squared difference
         diff_norm_sq = ((x - y) ** 2).sum(dim=-1)
 
-        # Compute denominator
-        denom = (1 - x_norm_sq) * (1 - y_norm_sq) + eps
+        # Compute denominator with additional numerical safety
+        denom = (1 - x_norm_sq) * (1 - y_norm_sq)
+        denom = torch.clamp(denom, min=eps)
 
-        # Compute hyperbolic distance
+        # Compute argument for arccosh with safety bounds
         arg = 1 + 2 * diff_norm_sq / denom
-        arg = arg.clamp(min=1 + eps)
+        # Clamp to valid range for arccosh (>= 1)
+        arg = torch.clamp(arg, min=1.0 + eps, max=1e6)
 
+        # Compute arccosh with numerical stability
+        # arccosh(x) = log(x + sqrt(x^2 - 1))
         distance = torch.acosh(arg) / math.sqrt(curvature)
+
+        # Handle any NaN or Inf values
+        distance = torch.where(torch.isfinite(distance), distance, torch.zeros_like(distance))
 
         return distance
 

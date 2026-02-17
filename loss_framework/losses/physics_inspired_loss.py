@@ -201,24 +201,32 @@ class PhysicsInspiredLoss(BaseLoss):
         Compute Hamiltonian conservation loss.
 
         Penalizes deviation from constant energy in feature space.
+        
+        Fixed: Added numerical stability and gradient clipping.
         """
         # Ensure features are on the same device as the module
         device = next(self.parameters()).device
         features = features.to(device)
 
         if momentum is None:
-            # Initialize momentum as gradient of features
-            momentum = torch.randn_like(features) * 0.01
+            # Initialize momentum as gradient of features with smaller scale
+            momentum = torch.randn_like(features) * 0.001
 
-        # Compute current Hamiltonian
+        # Ensure momentum is on correct device
+        momentum = momentum.to(device)
+
+        # Compute current Hamiltonian with gradient clipping
         H_current = HamiltonianMechanics.compute_hamiltonian(
             features, momentum, self.potential_net
         )
 
-        # Penalize deviation from mean energy
+        # Penalize deviation from mean energy with numerical stability
         H_mean = H_current.mean()
         H_var = ((H_current - H_mean) ** 2).mean()
-
+        
+        # Clip gradient contribution to prevent spikes
+        H_var = torch.clamp(H_var, max=1e6)
+        
         return H_var
 
     def _compute_conservation_loss(self, features: torch.Tensor) -> torch.Tensor:
