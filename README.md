@@ -69,7 +69,7 @@ Novel Loss Functions Implemented:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/novel-loss-framework.git
+git clone https://github.com/arirajuns/novel-loss-framework.git
 cd novel-loss-framework
 
 # Create conda environment
