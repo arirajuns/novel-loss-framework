@@ -143,3 +143,4 @@ results/*.csv
 *.pth
 *.pt
 wandb/
+SESSION_ACTIVITY_LOG.md
