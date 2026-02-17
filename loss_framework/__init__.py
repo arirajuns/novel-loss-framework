@@ -3,7 +3,7 @@
 # Using SOLID principles and design patterns
 
 __version__ = "1.0.0"
-__author__ = "AI Development Team"
+__author__ = "arirajuns"
 
 from .core.base_loss import BaseLoss
 from .core.loss_factory import LossFactory

@@ -4,8 +4,8 @@ title: "Novel Loss Function Framework"
 version: 1.0.0
 date-released: 2026-02-17
 authors:
-  - family-names: "Development Team"
-    given-names: "AI"
+  - family-names: ""
+    given-names: "arirajuns"
 repository-code: "https://github.com/arirajuns/novel-loss-framework"
 license: MIT
 keywords:

@@ -11,7 +11,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 setup(
     name="novel-loss-framework",
     version="1.0.0",
-    author="AI Development Team",
+    author="arirajuns",
     author_email="",
     description="A comprehensive framework for implementing and testing novel loss functions in PyTorch",
     long_description=long_description,

@@ -268,7 +268,7 @@ If you use this framework in your research, please cite:
 ```bibtex
 @software{novel_loss_framework,
   title={Novel Loss Function Framework},
-  author={AI Development Team},
+  author={arirajuns},
   year={2026},
   url={https://github.com/arirajuns/novel-loss-framework}
 }
