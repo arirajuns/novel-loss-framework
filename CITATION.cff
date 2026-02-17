@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Novel Loss Function Framework"
+version: 1.0.0
+date-released: 2026-02-17
+authors:
+  - family-names: "Development Team"
+    given-names: "AI"
+repository-code: "https://github.com/yourusername/novel-loss-framework"
+license: MIT
+keywords:
+  - deep learning
+  - loss functions
+  - pytorch
+  - curriculum learning
+  - robust statistics
+  - information theory
+  - riemannian geometry
+abstract: "A comprehensive, production-ready framework for implementing and testing novel loss functions in PyTorch, featuring adaptive weighted losses, geometric distance losses on manifolds, information-theoretic losses, physics-inspired constraints, and robust statistical losses."
