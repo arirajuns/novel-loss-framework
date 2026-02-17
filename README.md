@@ -65,7 +65,30 @@ Novel Loss Functions Implemented:
 
 ## Installation
 
-### Option 1: Using Conda (Recommended)
+### Option 1: Using Python venv (Recommended)
+
+```bash
+# Clone repository
+git clone https://github.com/arirajuns/novel-loss-framework.git
+cd novel-loss-framework
+
+# Create virtual environment
+python -m venv .venv
+
+# Activate environment
+# On Windows:
+.venv\Scripts\activate
+# On macOS/Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install package in development mode
+pip install -e .
+```
+
+### Option 2: Using Conda
 
 ```bash
 # Clone repository
@@ -80,14 +103,11 @@ conda activate novel-loss-framework
 pip install -e .
 ```
 
-### Option 2: Using pip
+### Option 3: Direct pip install from GitHub
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Install package
-pip install -e .
+# Install directly from GitHub (no cloning required)
+pip install git+https://github.com/arirajuns/novel-loss-framework.git
 ```
 
 ### Verify Installation
