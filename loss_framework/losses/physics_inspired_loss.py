@@ -202,6 +202,10 @@ class PhysicsInspiredLoss(BaseLoss):
 
         Penalizes deviation from constant energy in feature space.
         """
+        # Ensure features are on the same device as the module
+        device = next(self.parameters()).device
+        features = features.to(device)
+
         if momentum is None:
             # Initialize momentum as gradient of features
             momentum = torch.randn_like(features) * 0.01
@@ -223,15 +227,21 @@ class PhysicsInspiredLoss(BaseLoss):
 
         Enforces that conserved quantities remain constant.
         """
+        # Ensure features are on the same device as the module
+        device = next(self.parameters()).device
+        features = features.to(device)
+
         # Project features to conserved quantities
         conserved = self.conservation_proj(features)
 
         if self._previous_state is not None:
+            # Move previous state to same device
+            prev_state = self._previous_state.to(device)
             # Penalize change in conserved quantities
-            prev_conserved = self.conservation_proj(self._previous_state)
+            prev_conserved = self.conservation_proj(prev_state)
             conservation_loss = F.mse_loss(conserved, prev_conserved)
         else:
-            conservation_loss = torch.tensor(0.0, device=features.device)
+            conservation_loss = torch.tensor(0.0, device=device)
 
         # Update state
         self._previous_state = features.detach()
