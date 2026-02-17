@@ -186,7 +186,7 @@ git init
 git add .
 git commit -m "Initial commit: Novel Loss Function Framework v1.0.0"
 git branch -M main
-git remote add origin https://github.com/yourusername/novel-loss-framework.git
+git remote add origin https://github.com/arirajuns/novel-loss-framework.git
 git push -u origin main
 ```
 

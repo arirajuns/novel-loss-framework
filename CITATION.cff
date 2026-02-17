@@ -6,7 +6,7 @@ date-released: 2026-02-17
 authors:
   - family-names: "Development Team"
     given-names: "AI"
-repository-code: "https://github.com/yourusername/novel-loss-framework"
+repository-code: "https://github.com/arirajuns/novel-loss-framework"
 license: MIT
 keywords:
   - deep learning

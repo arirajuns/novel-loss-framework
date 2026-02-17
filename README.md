@@ -1,6 +1,6 @@
 # Novel Loss Function Framework
 
-[![CI](https://github.com/yourusername/novel-loss-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/novel-loss-framework/actions)
+[![CI](https://github.com/arirajuns/novel-loss-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/arirajuns/novel-loss-framework/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.12+-red.svg)](https://pytorch.org/)
@@ -270,6 +270,6 @@ If you use this framework in your research, please cite:
   title={Novel Loss Function Framework},
   author={AI Development Team},
   year={2026},
-  url={https://github.com/yourusername/novel-loss-framework}
+  url={https://github.com/arirajuns/novel-loss-framework}
 }
 ```

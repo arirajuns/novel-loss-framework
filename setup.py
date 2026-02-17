@@ -16,7 +16,7 @@ setup(
     description="A comprehensive framework for implementing and testing novel loss functions in PyTorch",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/novel-loss-framework",
+    url="https://github.com/arirajuns/novel-loss-framework",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
